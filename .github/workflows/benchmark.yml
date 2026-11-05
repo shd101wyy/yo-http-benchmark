@@ -61,8 +61,11 @@ jobs:
 
       - name: Install Yo compiler
         run: |
-          curl -sSL https://shd101wyy.github.io/Yo/install.sh | sh
+          curl -sSL https://shd101wyy.github.io/Yo/install.sh | sh -s -- --version "$(cat .yo-version)"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Show Yo version
+        run: yo --version
 
       - name: Build Yo server
         run: yo build

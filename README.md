@@ -2,7 +2,7 @@
 
 Minimal "Hello, World!" HTTP server benchmark comparing throughput across six runtimes. Yo is benchmarked in two configurations: **single-threaded** (one event loop) and **multi-threaded** (one event loop per CPU core via `std/worker` + `SO_REUSEPORT`).
 
-> **CI**: This benchmark runs automatically on every push via [GitHub Actions](https://github.com/shd101wyy/yo_http_benchmark/actions) on `ubuntu-latest` and `macos-latest`.
+> **CI**: This benchmark runs automatically on every push via [GitHub Actions](https://github.com/shd101wyy/yo-http-benchmark/actions) on `ubuntu-latest` and `macos-latest`.
 
 ## Results
 
@@ -97,10 +97,10 @@ bash benchmark.sh 60s 500 8
 
 ```bash
 # Yo (single-threaded)
-./yo-out/*/bin/yo_http_benchmark
+./yo-out/*/bin/yo-http-benchmark
 
 # Yo (multi-threaded, one worker per CPU core)
-./yo-out/*/bin/yo_http_benchmark_mt
+./yo-out/*/bin/yo-http-benchmark-mt
 
 # Bun
 bun run server_bun.ts

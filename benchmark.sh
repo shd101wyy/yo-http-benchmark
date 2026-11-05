@@ -60,12 +60,12 @@ cd "$(dirname "$0")"
 echo ""
 
 # Detect binary paths (use glob to handle any target triple)
-YO_BIN=$(ls ./yo-out/*/bin/yo_http_benchmark 2>/dev/null | head -1)
+YO_BIN=$(ls ./yo-out/*/bin/yo-http-benchmark 2>/dev/null | head -1)
 if [ -z "$YO_BIN" ]; then
   echo "ERROR: Yo binary not found in yo-out/*/bin/"
   exit 1
 fi
-YO_MT_BIN=$(ls ./yo-out/*/bin/yo_http_benchmark_mt 2>/dev/null | head -1)
+YO_MT_BIN=$(ls ./yo-out/*/bin/yo-http-benchmark-mt 2>/dev/null | head -1)
 
 echo "--- Benchmarking: Yo ---"
 "$YO_BIN" &

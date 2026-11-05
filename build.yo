@@ -4,18 +4,18 @@ build :: import("std/build");
 // NAMES it now (there is nothing to link here, so it is not even needed —
 // kept out rather than kept as a no-op).
 exe :: build.executable({
-  name : "yo_http_benchmark",
+  name : "yo-http-benchmark",
   root : "./src/main.yo",
   optimize : build.Optimize.ReleaseFast
 });
 
 exe_mt :: build.executable({
-  name : "yo_http_benchmark_mt",
+  name : "yo-http-benchmark-mt",
   root : "./src/main_mt.yo",
   optimize : build.Optimize.ReleaseFast
 });
 
-lib :: build.static_library({ name : "yo_http_benchmark-lib", root : "./src/lib.yo" });
+lib :: build.static_library({ name : "yo-http-benchmark-lib", root : "./src/lib.yo" });
 
 tests :: build.test({ name : "tests", root : "./tests/" });
 
