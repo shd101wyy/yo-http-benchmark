@@ -25,19 +25,19 @@ RESPONSE :: "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 13\r
 RESPONSE_LEN :: usize(102);
 
 handle_client :: (
-  fn(fd : i32, io : Io, exn : Exception) ->
+  fn(fd : i32, io : Io, exn : &Exception) ->
     Impl(Future(unit, IoExn))
 )(
   io.async(e => {
     // Set TCP_NODELAY to disable Nagle's algorithm
     val := i32(1);
-    val_ptr := &val;
+    val_ptr := addr_of(val);
     e.io.await(IO_tcp.setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (*u8)(val_ptr), u32(4)), e.io);
 
     buf := (*u8)(malloc(BUF_SIZE).unwrap());
 
-    done := false;
-    while(runtime(!done), {
+    mut(done) := false;
+    while(!done, {
       // recv and send are two awaits in a single while body
       n := e.io.await(IO_tcp.recv(fd, buf, BUF_SIZE, i32(0)), e.io);
       cond(
@@ -82,7 +82,7 @@ main :: (fn(io : Io) -> unit)({
 
   // Set SO_REUSEADDR
   reuse_val := i32(1);
-  reuse_ptr := &reuse_val;
+  reuse_ptr := addr_of(reuse_val);
   io.await(IO_tcp.setsockopt(raw_fd, SOL_SOCKET, SO_REUSEADDR, (*u8)(reuse_ptr), u32(4)), io);
 
   // Bind
@@ -113,12 +113,12 @@ main :: (fn(io : Io) -> unit)({
   addr_buf := (*u8)(malloc(usize(128)).unwrap());
   addr_len_ptr := (*u32)(malloc(usize(4)).unwrap());
 
-  while(runtime(true), {
+  while(true, {
     addr_len_ptr.* = u32(128);
     client_fd := io.await(IO_tcp.accept(raw_fd, addr_buf, addr_len_ptr), io);
     cond(
       (client_fd >= i32(0)) => {
-        task := handle_client(client_fd, io, exn);
+        task := handle_client(client_fd, io, &exn);
         io.spawn(task, e);
       },
       true => ()
